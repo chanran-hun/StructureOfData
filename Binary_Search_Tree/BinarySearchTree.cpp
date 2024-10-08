@@ -17,7 +17,7 @@ public:
 
 };
 
-TreeNode* FindValue(TreeNode* current, int target) {
+TreeNode* FindValue(TreeNode* current, int target) {	//한번의 검사로 남은 공간의 절반을 날릴 수 있기 때문에 유용함
 	if (current->value == 0) {	//현재 노드가 비어있을 경우 NULL반환
 		return NULL;
 	}
@@ -34,7 +34,7 @@ TreeNode* FindValue(TreeNode* current, int target) {
 		return FindValue(current->right, target);				//오른쪽 자식 노드로 재귀실행
 	}
 
-	return NULL;
+	return NULL;	//끝까지 찾지 못했다면 목푯값은 존재하지 않는것
 }
 
 int main() {
