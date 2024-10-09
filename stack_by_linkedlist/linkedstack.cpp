@@ -22,39 +22,50 @@ public:
 
 	void push(int value) {	//새로운 개체 추가
 		LinkedListNode* node = new LinkedListNode(value);
+
 		node->next = this->head;	//head 앞에 새로운 개체 삽입
 		this->head = node;	//head 갱신
+
 		cout << value << "을/를 새로 추가합니다" << endl;
 	}
 
 	int pop() {		//최상단 노드 연결해제, 값 반환
 		int value = 0;
+
 		if (this->head != nullptr) {
 			value = this->head->data;		//최상단 값 다른곳에 옮겨담기
 			this->head = this->head->next;	//head 갱신
 		}
+
 		return value;	//기존의 최상단 값 반환
 	}
 
 	void show() {	//Stack의 현 상태 가시화
-		cout << "Stack 가시화: ";
+		cout << "현재 Stack 상태 가시화: ";
+
 		LinkedListNode* temp = head;
+
 		while (temp != nullptr) {
 			cout << temp->data << "->";
 			temp = temp->next;
 		}
+
 		cout << "NULL" << endl;
 	}
 };
 
 int main() {
 	Stack myStack;
+
 	myStack.push(1);
-	myStack.push(2);
+	myStack.push(2);	//1부터 3 추가
 	myStack.push(3);
-	myStack.show();
-	cout << "pop 실행! 최상단 값: " << myStack.pop() << endl;
-	myStack.show();
+
+	myStack.show();		//현재 Stack상태 가시화
+
+	cout << myStack.pop() << "삭제 및 반환" << endl;		//가장 최근에 추가된 값 삭제 및 반환
+
+	myStack.show();		//현재 Stack상태 가시화
 
 	return 0;
 }     
