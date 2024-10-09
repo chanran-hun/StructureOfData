@@ -16,7 +16,7 @@ public:
 	}
 
 };
-
+//재귀적인 방법
 TreeNode* FindValue(TreeNode* current, int target) {	//한번의 검사로 남은 공간의 절반을 날릴 수 있기 때문에 유용함
 	if (current->value == 0) {	//현재 노드가 비어있을 경우 NULL반환
 		return NULL;
@@ -35,6 +35,21 @@ TreeNode* FindValue(TreeNode* current, int target) {	//한번의 검사로 남은 공간의
 	}
 
 	return NULL;	//끝까지 찾지 못했다면 목푯값은 존재하지 않는것
+}
+//반복적인 방법
+TreeNode* FindValueItr(TreeNode* root, int target) {
+	TreeNode* current = root;	//시작점
+
+	while (current != NULL && current->value != target) {	//마지막 노드에 도달하거나 목표물을 찾으면 종료
+		if (target < current->value) {						//목표물이 작을경우 왼쪽으로
+			current = current->left;
+		}
+		else {												//목표물이 클경우 오른쪽으로
+			current = current->right;
+		}
+	}
+
+	return current;
 }
 
 int main() {
