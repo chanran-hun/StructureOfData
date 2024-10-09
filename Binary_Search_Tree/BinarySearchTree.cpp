@@ -2,11 +2,11 @@
 using namespace std;
 
 class TreeNode {	//각각의 노드	
-	TreeNode* parent;	//경우에 따라서 부모를 가리키는 포인터를 가질 수 있음
 public:
 	int value;		//값
 	TreeNode* left;	//왼쪽 자식
 	TreeNode* right;	//오른쪽 자식
+	TreeNode* parent;	//경우에 따라서 부모를 가리키는 포인터를 가질 수 있음
 
 	TreeNode(int v) {
 		value = v;		//값을 입력받아서 초기화
@@ -14,7 +14,6 @@ public:
 		right = NULL;
 		parent = NULL;
 	}
-
 };
 
 //재귀적인 방법
@@ -37,6 +36,7 @@ TreeNode* FindValue(TreeNode* current, int target) {	//한번의 검사로 남은 공간의
 
 	return NULL;	//끝까지 찾지 못했다면 목푯값은 존재하지 않는것
 }
+
 //반복적인 방법
 TreeNode* FindValueItr(TreeNode* root, int target) {
 	TreeNode* current = root;	//시작점
@@ -63,7 +63,43 @@ public:
 
 		return FindValue(this->root, target);
 	}
+
+	void InsertNode(TreeNode* current, int new_value) {	//삽입 비용은 깊이에 선형적으로 비례해 증가함
+		if (new_value == current->value) {
+			return;
+		}
+
+		if (new_value < current->value) {
+			if (current->left == NULL) {
+				InsertNode(current->left, new_value);
+			}
+			else {
+				current->left = new TreeNode(new_value);
+				current->left->parent = current;
+			}
+		}
+		else {
+			if (current->right != NULL) {
+				InsertNode(current->right, new_value);
+			}
+			else {
+				current->right = new TreeNode(new_value);
+				current->right->parent = current;
+			}
+		}
+	}
+
+	void InsertTreeNode(int new_value) {
+		if (this->root == NULL) {
+			this->root = new TreeNode(new_value);
+		}
+		else {
+			InsertNode(this->root, new_value);
+		}
+	}
+
 };
+
 
 int main() {
 
