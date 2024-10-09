@@ -32,7 +32,7 @@ public:
 		cout << value << "을/를 삽입했습니다" << endl;
 	}
 
-	int pop() {
+	int pop() {	//가장 나중에 추가된 값을 삭제 및 반환
 		if (this->top > -1) {
 			return this->array[this->top--];
 		}
@@ -43,7 +43,7 @@ public:
 	}
 
 	void show() {	//현재 배열 안의 값을 보여주는 메서드
-		cout << "현재 Stack의 상태를 시각화 해드리겠습니다." << endl << "|";
+		cout << "현재 Stack의 상황 가시화 :" << " |";
 		for (int i = 0; i <= top; i++) {
 			cout << array[i] << "|";
 		}
@@ -57,15 +57,19 @@ int main() {
 	myStack.push(1);
 	myStack.push(2);
 	myStack.push(3);
-	myStack.push(4);
+	myStack.push(4);	//1부터 8까지 추가
 	myStack.push(5);
 	myStack.push(6);
 	myStack.push(7);
 	myStack.push(8);
-	myStack.show();
-	cout << "pop 실행, 뽑아낸 꼭대기 값:" << myStack.pop() << endl;
-	cout << "pop 실행, 뽑아낸 꼭대기 값:" << myStack.pop() << endl;
-	myStack.show();
+
+	myStack.show();		//현재 Stack의 상황 가시화
+
+	cout << myStack.pop() << "삭제 및 반환" << endl;		//가장 최근에 추가된 값 2개 삭제 및 반환
+	cout << myStack.pop() << "삭제 및 반환" << endl;		//가장 최근에 추가된 값 2개 삭제 및 반환
+
+	myStack.show();		//현재 Stack의 상황 가시화
+
 	return 0;
 }
 //push,pop의 경우 배열의 길이와 관계 없이 비용이 동일! 이때, 배열을 확장할 때는 길이에 따라 영향이 감 ->
