@@ -16,6 +16,7 @@ public:
 	}
 
 };
+
 //재귀적인 방법
 TreeNode* FindValue(TreeNode* current, int target) {	//한번의 검사로 남은 공간의 절반을 날릴 수 있기 때문에 유용함
 	if (current->value == 0) {	//현재 노드가 비어있을 경우 NULL반환
@@ -51,6 +52,18 @@ TreeNode* FindValueItr(TreeNode* root, int target) {
 
 	return current;
 }
+
+class BinarySearchTree {
+	TreeNode* root;
+public:
+	TreeNode* FindTreeNode(int target) {
+		if (this->root == NULL) {
+			return;
+		}
+
+		return FindValue(this->root, target);
+	}
+};
 
 int main() {
 
