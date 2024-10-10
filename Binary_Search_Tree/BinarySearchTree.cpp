@@ -98,6 +98,47 @@ public:
 		}
 	}
 
+	void RemoveTreeNode(TreeNode* node) {
+		if (this->root == NULL || node == NULL) {
+			return;
+		}
+
+		//경우1 : 리프노드 제거
+		if (node->left == NULL && node->right == NULL) {
+			if (node->parent == NULL) {	//이 노드가 유일한 노드일 경우
+				this->root == NULL;
+			} else if (node->parent->left == node) {	//자신이 왼쪽자식이라면 부모의 왼쪽 노드 삭제
+				node->parent->left = NULL;
+			} else {
+				node->parent->right = NULL;				//오른쪽 자식이라면 부모의 오른쪽 노드 삭제
+			}
+
+			return;
+		}
+
+		//경우2 : 자식이 하나인 노드 제거
+		if (node->left == NULL || node->right == NULL) {
+			TreeNode* child = node->left;
+			if (node->left == NULL) {	//자식이 어느쪽에 있는지 확인
+				child = node->right;
+			}
+
+			child->parent = node->parent;	//삭제노드의 자식을 승격시킴
+			if (node->parent == NULL) {		//이 노드가 root였다면 자식을 root로 갱신
+				this->root == child;
+			} else if (node->parent->left == node) {
+				node->parent->left = child;
+			} else {
+				node->parent->right == child;	//기존이 왼쪽 자식이었는지 오른쪽 자식이었는지에 따라 알맞게 승격
+			}
+
+			return;
+		}
+
+		//경우3 : 자식이 둘인 노드 제거
+
+	}
+
 };
 
 
