@@ -25,7 +25,7 @@ public:
 		if (this->back == nullptr) {	//만약 노드가 하나라면 그 노드는 front이자 back이 된다
 			this->front = node;
 			this->back = node;
-		}
+		}	
 		else {
 			this->back->next = node;	//뒤에 하나를 추가했다면 그 추가된 노드가 back이 되어야 한다.
 			this->back = node;
@@ -40,7 +40,9 @@ public:
 			return -1;
 		}
 		int value = this->front->data;		//front 노드의 데이터값을 저장해둔다.
+		LinkedListNode* temp = this->front;	//현재의 front를 저장해둔다
 		this->front = this->front->next;	//front 다음 노드가 front가 되게 한다.
+		delete temp;	//기존의 front가 차지하는 메모리 반납
 		if (this->front == nullptr) {
 			cout << "남은 데이터가 없습니다" << endl;		//만약 dequeue한 값이 queue의 유일한 값이었다면 
 			this->back = nullptr;						//back도 NULL이 되어야한다.
