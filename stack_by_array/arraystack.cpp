@@ -12,48 +12,66 @@ public:
 		array = new int[array_size];
 	}
 
+	~Stack(){		//소멸자
+		delete[] array;
+	}
+
 	void push(int value) {	//새로운 수를 입력
 		if (this->top == this->array_size - 1) {
 			cout << "현재 배열은 공간이 부족합니다 두배로 늘립니다" << endl;	//배열의 공간이 부족할 경우 확장
-			int* tempArray = new int[this->array_size];
+			int* tempArray = new int[this->array_size*2];	//크기를 두배로 확장
 			for (int i = 0; i < this->array_size; i++) {
 				tempArray[i] = this->array[i];
 			}
-			delete this->array;
+
+			delete[] this->array;
+
+			this->array = tempArray;
 			this->array_size *= 2;
-			this->array = new int[this->array_size];
+			
 			for (int i = 0; i < this->array_size / 2; i++) {
 				this->array[i] = tempArray[i];
 			}
-
 		}
-		this->top++;
-		this->array[this->top] = value;
+
+		this->array[++this->top] = value;
 		cout << value << "을/를 삽입했습니다" << endl;
 	}
 
 	int pop() {	//가장 나중에 추가된 값을 삭제 및 반환
 		if (this->top > -1) {
 			return this->array[this->top--];
-		}
-		else {
-			cout << "현재 배열이 비어있습니다" << endl;
-			return -1;
+		} else {
+			throw out_of_range("스택이 비어 있습니다.");
 		}
 	}
 
 	void show() {	//현재 배열 안의 값을 보여주는 메서드
-		cout << "현재 Stack의 상황 가시화 :" << " |";
-		for (int i = 0; i <= top; i++) {
-			cout << array[i] << "|";
+		if (top == -1) {
+			cout << "현재 Stack이 비어 있습니다." << endl;
+		} else {
+			cout << "현재 Stack의 상황 가시화: |";
+			for (int i = 0; i <= top; i++) {
+				cout << array[i] << "|";
+			}
+			cout << endl;
 		}
-		cout << endl;
 	}
 };
 
 int main() {
 	Stack myStack(3);
-	
+
+	try {
+		int value = myStack.pop();
+		cout << value << "을/를 꺼냈습니다." << endl;
+	}
+	catch (const out_of_range& e) {
+		cout << "에러 발생: " << e.what() << endl;
+	}
+
+	myStack.show();		//현재 Stack의 상황 가시화
+
 	myStack.push(1);
 	myStack.push(2);
 	myStack.push(3);
@@ -65,9 +83,21 @@ int main() {
 
 	myStack.show();		//현재 Stack의 상황 가시화
 
-	cout << myStack.pop() << "삭제 및 반환" << endl;		//가장 최근에 추가된 값 2개 삭제 및 반환
-	cout << myStack.pop() << "삭제 및 반환" << endl;		//가장 최근에 추가된 값 2개 삭제 및 반환
+	try {
+		int value = myStack.pop();
+		cout << value << "을/를 꺼냈습니다." << endl;
+	}
+	catch (const out_of_range& e) {
+		cout << "에러 발생: " << e.what() << endl;
+	}
 
+	try {
+		int value = myStack.pop();
+		cout << value << "을/를 꺼냈습니다." << endl;
+	}
+	catch (const out_of_range& e) {
+		cout << "에러 발생: " << e.what() << endl;
+	}
 	myStack.show();		//현재 Stack의 상황 가시화
 
 	return 0;
