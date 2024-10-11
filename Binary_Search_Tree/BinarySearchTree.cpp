@@ -90,7 +90,7 @@ public:
 	}
 
 	void InsertTreeNode(int new_value) {
-		if (this->root == NULL) {
+		if (this->root == NULL) {	
 			this->root = new TreeNode(new_value);
 		}
 		else {
@@ -99,7 +99,7 @@ public:
 	}
 
 	void RemoveTreeNode(TreeNode* node) {
-		if (this->root == NULL || node == NULL) {
+		if (this->root == NULL || node == NULL) {	//트리가 비어있을시 NULL반환
 			return;
 		}
 
@@ -112,6 +112,10 @@ public:
 			} else {
 				node->parent->right = NULL;				//오른쪽 자식이라면 부모의 오른쪽 노드 삭제
 			}
+
+			node->parent = NULL;
+			node->left = NULL;
+			node->right = NULL;
 
 			return;
 		}
@@ -132,11 +136,43 @@ public:
 				node->parent->right == child;	//기존이 왼쪽 자식이었는지 오른쪽 자식이었는지에 따라 알맞게 승격
 			}
 
+			node->parent = NULL;
+			node->left = NULL;
+			node->right = NULL;
+		
 			return;
 		}
 
 		//경우3 : 자식이 둘인 노드 제거
+		TreeNode* successor = node->right;
 
+		while (successor->left == NULL) {	//후속자 탐색
+			successor = successor->left;
+		}
+
+		RemoveTreeNode(successor);		//후속자 연결해제
+
+		if (node->parent == NULL) {		//노드의 위치에 후속자 삽입
+			root = successor;
+		} else if (node->parent->left == node) {
+			node->parent->left = successor;
+		} else {
+			node->parent->right = successor;
+		}
+
+		successor->parent = node->parent;
+
+		successor->left = node->left;
+		node->left->parent = successor;
+
+		successor->right = node->right;
+		if (node->right != NULL) {
+			node->right->parent = successor;
+		}
+
+		node->parent = NULL;
+		node->left = NULL;
+		node->right = NULL;
 	}
 
 };
