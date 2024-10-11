@@ -20,21 +20,36 @@ public:
 		head = nullptr;		//head를 NULL로 초기화
 	}
 
+	~Stack() {
+		while (head != nullptr) {
+			LinkedListNode* temp = head;
+			head = head->next;
+			delete temp;
+		}
+	}
+
 	void push(int value) {	//새로운 개체 추가
 		LinkedListNode* node = new LinkedListNode(value);
 
-		node->next = this->head;	//head 앞에 새로운 개체 삽입
-		this->head = node;	//head 갱신
+		node->next = head;	//head 앞에 새로운 개체 삽입
+		head = node;	//head 갱신
 
 		cout << value << "을/를 새로 추가합니다" << endl;
 	}
 
 	int pop() {		//최상단 노드 연결해제, 값 반환
+		if (this->head == nullptr) {
+			cout << "스택이 비어 있습니다." << endl;
+			return -1; // 에러 코드 반환
+		}
+
 		int value = 0;
 
 		if (this->head != nullptr) {
-			value = this->head->data;		//최상단 값 다른곳에 옮겨담기
-			this->head = this->head->next;	//head 갱신
+			LinkedListNode* temp = head;
+			value = temp->data;		//최상단 값 다른곳에 옮겨담기
+			head = head->next;	//head 갱신
+			delete temp;
 		}
 
 		return value;	//기존의 최상단 값 반환
