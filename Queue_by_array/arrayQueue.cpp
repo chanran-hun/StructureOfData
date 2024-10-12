@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 using namespace std;
 
 class Queue {
@@ -7,54 +7,60 @@ class Queue {
 	int* array;
 	int array_size;
 	int reset;
-	int count; // ÇöÀç Å¥¿¡ ÀÖ´Â ¿ä¼ÒÀÇ °³¼ö¸¦ ÃßÀûÇÏ´Â º¯¼ö
+	int count; // í˜„ì¬ íì— ìˆëŠ” ìš”ì†Œì˜ ê°œìˆ˜ë¥¼ ì¶”ì í•˜ëŠ” ë³€ìˆ˜
 public:
-	Queue(int n) {	//¹è¿­ Å©±â¸¦ ÀÔ·Â¹Ş°í ÃÖ¼±µÎ, ÃÖÈÄ¹æ, Ãâ·Â¿¡ °ü·ÃÇÑ resetÀ» 0À¸·Î ÃÊ±âÈ­ÇÏ°í ¹è¿­Å©±â¸¸Å­ÀÇ 
-					//¹è¿­ µ¿ÀûÇÒ´ç
+	Queue(int n) {	//ë°°ì—´ í¬ê¸°ë¥¼ ì…ë ¥ë°›ê³  ìµœì„ ë‘, ìµœí›„ë°©, ì¶œë ¥ì— ê´€ë ¨í•œ resetì„ 0ìœ¼ë¡œ ì´ˆê¸°í™”í•˜ê³  ë°°ì—´í¬ê¸°ë§Œí¼ì˜ 
+					//ë°°ì—´ ë™ì í• ë‹¹
 		array_size = n;
 		front = 0;
 		back = 0;
 		array = new int[array_size];
 		reset = 0;
-		count = 0; // Å¥ÀÇ ÃÊ±â »óÅÂ´Â ºñ¾î ÀÖÀ½
+		count = 0; // íì˜ ì´ˆê¸° ìƒíƒœëŠ” ë¹„ì–´ ìˆìŒ
 	}
 
-	void enqueue(int n) {	//»õ·Î¿î ¼ö Ãß°¡
-		if (count == array_size) { // ¹è¿­ÀÌ °¡µæ Âù »óÅÂ
-			cout << "»ğÀÔ ½ÇÆĞ: Å¥°¡ °¡µæ Ã¡½À´Ï´Ù." << endl;
+	~Queue() {
+		cout << "ì†Œë©¸ì ì‹¤í–‰" << endl;
+		delete[] array; // ë™ì  í• ë‹¹ëœ ë°°ì—´ í•´ì œ
+	}
+
+
+	void enqueue(int n) {	//ìƒˆë¡œìš´ ìˆ˜ ì¶”ê°€
+		if (count == array_size) { // ë°°ì—´ì´ ê°€ë“ ì°¬ ìƒíƒœ
+			cout << "ì‚½ì… ì‹¤íŒ¨: íê°€ ê°€ë“ ì°¼ìŠµë‹ˆë‹¤." << endl;
 			return;
 		}
 
 		array[back] = n;
-		back = (back + 1) % array_size; // backÀ» ¸ğµâ·Î ¿¬»êÇÏ¿© ¼øÈ¯ Ã³¸®
-		count++; // Å¥¿¡ ¿ä¼Ò¸¦ ÇÏ³ª Ãß°¡
-		cout << n << " Ãß°¡ ¼º°ø!" << endl;
+		back = (back + 1) % array_size; // backì„ ëª¨ë“ˆë¡œ ì—°ì‚°í•˜ì—¬ ìˆœí™˜ ì²˜ë¦¬
+		count++; // íì— ìš”ì†Œë¥¼ í•˜ë‚˜ ì¶”ê°€
+		cout << n << " ì¶”ê°€ ì„±ê³µ!" << endl;
 	}
 
 	bool isEmpty() {
-		// count º¯¼ö¸¦ »ç¿ëÇÏ¿© ºñ¾îÀÖ´ÂÁö È®ÀÎ
+		// count ë³€ìˆ˜ë¥¼ ì‚¬ìš©í•˜ì—¬ ë¹„ì–´ìˆëŠ”ì§€ í™•ì¸
 		return count == 0;
 	}
 
 	int dequeue() {
-		if (isEmpty()) { // Å¥°¡ ºñ¾î ÀÖ´ÂÁö È®ÀÎ
-			cout << "»èÁ¦ ½ÇÆĞ: Å¥°¡ ºñ¾î ÀÖ½À´Ï´Ù." << endl;
-			return -1; // ½ÇÁ¦ °ªÀ» ¹İÈ¯ÇÏ´Â ´ë½Å ½ÇÆĞ¸¦ ¾Ë·ÁÁÜ
+		if (isEmpty()) { // íê°€ ë¹„ì–´ ìˆëŠ”ì§€ í™•ì¸
+			cout << "ì‚­ì œ ì‹¤íŒ¨: íê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤." << endl;
+			return -1; // ì‹¤ì œ ê°’ì„ ë°˜í™˜í•˜ëŠ” ëŒ€ì‹  ì‹¤íŒ¨ë¥¼ ì•Œë ¤ì¤Œ
 		}
 
 		int value = array[front];
-		front = (front + 1) % array_size; // front¸¦ ¼øÈ¯ Ã³¸®
-		count--; // Å¥¿¡¼­ ¿ä¼Ò¸¦ ÇÏ³ª Á¦°Å
+		front = (front + 1) % array_size; // frontë¥¼ ìˆœí™˜ ì²˜ë¦¬
+		count--; // íì—ì„œ ìš”ì†Œë¥¼ í•˜ë‚˜ ì œê±°
 		return value;
 	}
 
 	void show() {
-		cout << "ÇöÀç Queue »óÅÂ °¡½ÃÈ­ | ";
+		cout << "í˜„ì¬ Queue ìƒíƒœ ê°€ì‹œí™” | ";
 		if (count == 0) {
-			cout << "Å¥°¡ ºñ¾î ÀÖ½À´Ï´Ù." << endl;
+			cout << "íê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤." << endl;
 		} else {
 			for (int i = 0; i < count; i++) {
-				int index = (front + i) % array_size; // frontºÎÅÍ count°³ÀÇ ¿ä¼Ò Ãâ·Â
+				int index = (front + i) % array_size; // frontë¶€í„° countê°œì˜ ìš”ì†Œ ì¶œë ¥
 				cout << array[index] << " | ";
 			}
 			cout << endl;
@@ -66,54 +72,54 @@ int main() {
 	Queue myQueue = Queue(5);
 
 	if (!myQueue.isEmpty()) {
-		cout << myQueue.dequeue() << " »èÁ¦ ¹× ¹İÈ¯" << endl;
+		cout << myQueue.dequeue() << " ì‚­ì œ ë° ë°˜í™˜" << endl;
 	} else {
-		cout << "Å¥°¡ ºñ¾î ÀÖ½À´Ï´Ù." << endl;
+		cout << "íê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤." << endl;
 	}
 
-	myQueue.enqueue(1);	//1ºÎÅÍ 5±îÁö Å¥ ±¸Á¶¿¡ °ªÀ» Ãß°¡ÇÔ
+	myQueue.enqueue(1);	//1ë¶€í„° 5ê¹Œì§€ í êµ¬ì¡°ì— ê°’ì„ ì¶”ê°€í•¨
 	myQueue.enqueue(2);
 	myQueue.enqueue(3);
 	myQueue.enqueue(4);
 	myQueue.enqueue(5);
 
-	myQueue.show();		//ÇöÀç StackÀÇ »óÅÂ¸¦ °¡½ÃÈ­ÇÏ±â
+	myQueue.show();		//í˜„ì¬ Stackì˜ ìƒíƒœë¥¼ ê°€ì‹œí™”í•˜ê¸°
 
 	if (!myQueue.isEmpty()) {
-		cout << myQueue.dequeue() << " »èÁ¦ ¹× ¹İÈ¯" << endl;
+		cout << myQueue.dequeue() << " ì‚­ì œ ë° ë°˜í™˜" << endl;
 	} else {
-		cout << "Å¥°¡ ºñ¾î ÀÖ½À´Ï´Ù." << endl;
+		cout << "íê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤." << endl;
 	}
 	if (!myQueue.isEmpty()) {
-		cout << myQueue.dequeue() << " »èÁ¦ ¹× ¹İÈ¯" << endl;//°¡Àå ¸ÕÀú Ãß°¡µÈ °ªµéÀ» ¾Õ¿¡¼­ºÎÅÍ 3°³ 
-	} else {												//»èÁ¦ ¹× Ãâ·Â
-		cout << "Å¥°¡ ºñ¾î ÀÖ½À´Ï´Ù." << endl;
+		cout << myQueue.dequeue() << " ì‚­ì œ ë° ë°˜í™˜" << endl;//ê°€ì¥ ë¨¼ì € ì¶”ê°€ëœ ê°’ë“¤ì„ ì•ì—ì„œë¶€í„° 3ê°œ 
+	} else {												//ì‚­ì œ ë° ì¶œë ¥
+		cout << "íê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤." << endl;
 	}		
 	if (!myQueue.isEmpty()) {
-		cout << myQueue.dequeue() << " »èÁ¦ ¹× ¹İÈ¯" << endl;
+		cout << myQueue.dequeue() << " ì‚­ì œ ë° ë°˜í™˜" << endl;
 	} else {
-		cout << "Å¥°¡ ºñ¾î ÀÖ½À´Ï´Ù." << endl;
+		cout << "íê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤." << endl;
 	}				
 
-	myQueue.show();		//ÇöÀç StackÀÇ »óÅÂ¸¦ °¡½ÃÈ­ÇÏ±â
+	myQueue.show();		//í˜„ì¬ Stackì˜ ìƒíƒœë¥¼ ê°€ì‹œí™”í•˜ê¸°
 
-	myQueue.enqueue(6);	//6ºÎÅÍ 8±îÁö Å¥ ±¸Á¶¿¡ °ªÀ» Ãß°¡ÇÔ
+	myQueue.enqueue(6);	//6ë¶€í„° 8ê¹Œì§€ í êµ¬ì¡°ì— ê°’ì„ ì¶”ê°€í•¨
 	myQueue.enqueue(7);
 	myQueue.enqueue(8);
 
-	myQueue.show();		//ÇöÀç StackÀÇ »óÅÂ¸¦ °¡½ÃÈ­ÇÏ±â
+	myQueue.show();		//í˜„ì¬ Stackì˜ ìƒíƒœë¥¼ ê°€ì‹œí™”í•˜ê¸°
 
 	if (!myQueue.isEmpty()) {
-		cout << myQueue.dequeue() << " »èÁ¦ ¹× ¹İÈ¯" << endl;	//°¡Àå ¸ÕÀú Ãß°¡µÈ °ªÀ» 1°³ »èÁ¦ ¹× Ãâ·Â
+		cout << myQueue.dequeue() << " ì‚­ì œ ë° ë°˜í™˜" << endl;	//ê°€ì¥ ë¨¼ì € ì¶”ê°€ëœ ê°’ì„ 1ê°œ ì‚­ì œ ë° ì¶œë ¥
 	} else {
-		cout << "Å¥°¡ ºñ¾î ÀÖ½À´Ï´Ù." << endl;
+		cout << "íê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤." << endl;
 	}						
 
-	myQueue.enqueue(9);	//9¸¦ Å¥ ±¸Á¶¿¡ Ãß°¡ÇÔ
+	myQueue.enqueue(9);	//9ë¥¼ í êµ¬ì¡°ì— ì¶”ê°€í•¨
 
-	myQueue.show();		//ÇöÀç StackÀÇ »óÅÂ¸¦ °¡½ÃÈ­ÇÔ
+	myQueue.show();		//í˜„ì¬ Stackì˜ ìƒíƒœë¥¼ ê°€ì‹œí™”í•¨
 
-	myQueue.enqueue(10);	//10¸¦ Å¥ ±¸Á¶¿¡ Ãß°¡ÇÔ
+	myQueue.enqueue(10);	//10ë¥¼ í êµ¬ì¡°ì— ì¶”ê°€í•¨
 
 	return 0;
 }
