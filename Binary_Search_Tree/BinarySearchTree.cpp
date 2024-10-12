@@ -56,45 +56,45 @@ TreeNode* FindValueItr(TreeNode* root, int target) {
 class BinarySearchTree {
 	TreeNode* root;
 public:
+	BinarySearchTree() {
+		root = NULL;
+	}
+
 	TreeNode* FindTreeNode(int target) {
 		if (this->root == NULL) {
-			return;
+			return NULL;
 		}
 
 		return FindValue(this->root, target);
 	}
 
 	void InsertNode(TreeNode* current, int new_value) {	//삽입 비용은 깊이에 선형적으로 비례해 증가함
-		if (new_value == current->value) {
-			return;
-		}
-
 		if (new_value < current->value) {
 			if (current->left == NULL) {
-				InsertNode(current->left, new_value);
-			}
-			else {
 				current->left = new TreeNode(new_value);
 				current->left->parent = current;
 			}
+			else {
+				InsertNode(current->left, new_value);
+			}
 		}
 		else {
-			if (current->right != NULL) {
-				InsertNode(current->right, new_value);
-			}
-			else {
+			if (current->right == NULL) {
 				current->right = new TreeNode(new_value);
 				current->right->parent = current;
+			}
+			else {
+				InsertNode(current->right, new_value);
 			}
 		}
 	}
 
 	void InsertTreeNode(int new_value) {
-		if (this->root == NULL) {	
-			this->root = new TreeNode(new_value);
+		if (root == NULL) {	
+			root = new TreeNode(new_value);
 		}
 		else {
-			InsertNode(this->root, new_value);
+			InsertNode(root, new_value);
 		}
 	}
 
@@ -106,7 +106,7 @@ public:
 		//경우1 : 리프노드 제거
 		if (node->left == NULL && node->right == NULL) {
 			if (node->parent == NULL) {	//이 노드가 유일한 노드일 경우
-				this->root == NULL;
+				this->root = NULL;
 			} else if (node->parent->left == node) {	//자신이 왼쪽자식이라면 부모의 왼쪽 노드 삭제
 				node->parent->left = NULL;
 			} else {
@@ -129,11 +129,11 @@ public:
 
 			child->parent = node->parent;	//삭제노드의 자식을 승격시킴
 			if (node->parent == NULL) {		//이 노드가 root였다면 자식을 root로 갱신
-				this->root == child;
+				this->root = child;
 			} else if (node->parent->left == node) {
 				node->parent->left = child;
 			} else {
-				node->parent->right == child;	//기존이 왼쪽 자식이었는지 오른쪽 자식이었는지에 따라 알맞게 승격
+				node->parent->right = child;	//기존이 왼쪽 자식이었는지 오른쪽 자식이었는지에 따라 알맞게 승격
 			}
 
 			node->parent = NULL;
@@ -146,7 +146,7 @@ public:
 		//경우3 : 자식이 둘인 노드 제거
 		TreeNode* successor = node->right;
 
-		while (successor->left == NULL) {	//후속자 탐색
+		while (successor->left != NULL) {	//후속자 탐색
 			successor = successor->left;
 		}
 
@@ -175,9 +175,48 @@ public:
 		node->right = NULL;
 	}
 
+	void PrintTree(TreeNode* node, int space = 0, int level_space = 6) {
+		if (node == NULL)
+			return;
+
+		space += level_space;
+
+		// 오른쪽 자식 출력 (오른쪽으로 더 많은 여백을 준 후)
+		PrintTree(node->right, space);
+
+		// 현재 노드 출력
+		cout << endl;
+		for (int i = level_space; i < space; i++)
+			cout << " ";  // 여백을 출력
+		cout << node->value << "\n";  // 노드의 값을 출력
+
+		// 왼쪽 자식 출력 (왼쪽으로 여백을 준 후)
+		PrintTree(node->left, space);
+	}
+
+
+	void Display() {
+		PrintTree(root);
+	}
+
 };
 
 
 int main() {
+	BinarySearchTree tree;
+
+	tree.InsertTreeNode(8);
+	tree.InsertTreeNode(3);
+	tree.InsertTreeNode(10);
+	tree.InsertTreeNode(1);
+	tree.InsertTreeNode(6);
+	tree.InsertTreeNode(14);
+	tree.InsertTreeNode(4);
+	tree.InsertTreeNode(7);
+	tree.InsertTreeNode(13);
+
+	tree.Display();  // 트리 출력
+
+	return 0;
 
 }
