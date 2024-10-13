@@ -1,51 +1,43 @@
-#include <iostream>
+ï»¿#include <iostream>
 using namespace std;
 
-class TreeNode {	//°¢°¢ÀÇ ³ëµå	
+class TreeNode {	//ê°ê°ì˜ ë…¸ë“œ	
 public:
-	int value;		//°ª
-	TreeNode* left;	//¿ŞÂÊ ÀÚ½Ä
-	TreeNode* right;	//¿À¸¥ÂÊ ÀÚ½Ä
-	TreeNode* parent;	//°æ¿ì¿¡ µû¶ó¼­ ºÎ¸ğ¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ¸¦ °¡Áú ¼ö ÀÖÀ½
+	int value;		//ê°’
+	TreeNode* left;	//ì™¼ìª½ ìì‹
+	TreeNode* right;	//ì˜¤ë¥¸ìª½ ìì‹
+	TreeNode* parent;	//ê²½ìš°ì— ë”°ë¼ì„œ ë¶€ëª¨ë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°ë¥¼ ê°€ì§ˆ ìˆ˜ ìˆìŒ
 
 	TreeNode(int v) {
-		value = v;		//°ªÀ» ÀÔ·Â¹Ş¾Æ¼­ ÃÊ±âÈ­
-		left = NULL;	//Æ÷ÀÎÅÍµéÀº ºó°ø°£À¸·Î ÃÊ±âÈ­	
+		value = v;		//ê°’ì„ ì…ë ¥ë°›ì•„ì„œ ì´ˆê¸°í™”
+		left = NULL;	//í¬ì¸í„°ë“¤ì€ ë¹ˆê³µê°„ìœ¼ë¡œ ì´ˆê¸°í™”	
 		right = NULL;
 		parent = NULL;
 	}
 };
 
-//Àç±ÍÀûÀÎ ¹æ¹ı
-TreeNode* FindValue(TreeNode* current, int target) {	//ÇÑ¹øÀÇ °Ë»ç·Î ³²Àº °ø°£ÀÇ Àı¹İÀ» ³¯¸± ¼ö ÀÖ±â ¶§¹®¿¡ À¯¿ëÇÔ
-	if (current->value == 0) {	//ÇöÀç ³ëµå°¡ ºñ¾îÀÖÀ» °æ¿ì NULL¹İÈ¯
-		return NULL;
-	}
-
-	if (current->value == target) {	//¸ñÇ©°ªÀÌ ÇöÀç ³ëµåÀÇ °ªÀÌ¶ó¸é ÇöÀç ³ëµå¸¦ ¹İÈ¯
+//ì¬ê·€ì ì¸ ë°©ë²•
+TreeNode* FindValue(TreeNode* current, int target) {	//í•œë²ˆì˜ ê²€ì‚¬ë¡œ ë‚¨ì€ ê³µê°„ì˜ ì ˆë°˜ì„ ë‚ ë¦´ ìˆ˜ ìˆê¸° ë•Œë¬¸ì— ìœ ìš©í•¨
+	if (current == NULL || current->value == target) {	//ëª©í‘¯ê°’ì´ í˜„ì¬ ë…¸ë“œì˜ ê°’ì´ë¼ë©´ í˜„ì¬ ë…¸ë“œë¥¼ ë°˜í™˜
 		return current;
 	}
 
-	if (target < current->value && current->left != NULL) {	//ÇöÀç ³ëµåº¸´Ù ¸ñÇ©°ªÀÌ ÀÛ´Ù¸é 
-		return FindValue(current->left, target);			//¿ŞÂÊ ÀÚ½Ä ³ëµå·Î Àç±Í½ÇÇà
+	if (target < current->value) {	//í˜„ì¬ ë…¸ë“œë³´ë‹¤ ëª©í‘¯ê°’ì´ ì‘ë‹¤ë©´ 
+		return FindValue(current->left, target);			//ì™¼ìª½ ìì‹ ë…¸ë“œë¡œ ì¬ê·€ì‹¤í–‰
 	}
 
-	if (target > current->value && current->right != NULL) {	//ÇöÀç ³ëµåº¸´Ù ¸ñÇ©°ªÀÌ Å©´Ù¸é
-		return FindValue(current->right, target);				//¿À¸¥ÂÊ ÀÚ½Ä ³ëµå·Î Àç±Í½ÇÇà
-	}
-
-	return NULL;	//³¡±îÁö Ã£Áö ¸øÇß´Ù¸é ¸ñÇ©°ªÀº Á¸ÀçÇÏÁö ¾Ê´Â°Í
+	return FindValue(current->right, target);
 }
 
-//¹İº¹ÀûÀÎ ¹æ¹ı
+//ë°˜ë³µì ì¸ ë°©ë²•
 TreeNode* FindValueItr(TreeNode* root, int target) {
-	TreeNode* current = root;	//½ÃÀÛÁ¡
+	TreeNode* current = root;	//ì‹œì‘ì 
 
-	while (current != NULL && current->value != target) {	//¸¶Áö¸· ³ëµå¿¡ µµ´ŞÇÏ°Å³ª ¸ñÇ¥¹°À» Ã£À¸¸é Á¾·á
-		if (target < current->value) {						//¸ñÇ¥¹°ÀÌ ÀÛÀ»°æ¿ì ¿ŞÂÊÀ¸·Î
+	while (current != NULL && current->value != target) {	//ë§ˆì§€ë§‰ ë…¸ë“œì— ë„ë‹¬í•˜ê±°ë‚˜ ëª©í‘œë¬¼ì„ ì°¾ìœ¼ë©´ ì¢…ë£Œ
+		if (target < current->value) {						//ëª©í‘œë¬¼ì´ ì‘ì„ê²½ìš° ì™¼ìª½ìœ¼ë¡œ
 			current = current->left;
 		}
-		else {												//¸ñÇ¥¹°ÀÌ Å¬°æ¿ì ¿À¸¥ÂÊÀ¸·Î
+		else {												//ëª©í‘œë¬¼ì´ í´ê²½ìš° ì˜¤ë¥¸ìª½ìœ¼ë¡œ
 			current = current->right;
 		}
 	}
@@ -68,7 +60,7 @@ public:
 		return FindValue(this->root, target);
 	}
 
-	void InsertNode(TreeNode* current, int new_value) {	//»ğÀÔ ºñ¿ëÀº ±íÀÌ¿¡ ¼±ÇüÀûÀ¸·Î ºñ·ÊÇØ Áõ°¡ÇÔ
+	void InsertNode(TreeNode* current, int new_value) {	//ì‚½ì… ë¹„ìš©ì€ ê¹Šì´ì— ì„ í˜•ì ìœ¼ë¡œ ë¹„ë¡€í•´ ì¦ê°€í•¨
 		if (new_value < current->value) {
 			if (current->left == NULL) {
 				current->left = new TreeNode(new_value);
@@ -99,18 +91,18 @@ public:
 	}
 
 	void RemoveTreeNode(TreeNode* node) {
-		if (this->root == NULL || node == NULL) {	//Æ®¸®°¡ ºñ¾îÀÖÀ»½Ã NULL¹İÈ¯
+		if (this->root == NULL || node == NULL) {	//íŠ¸ë¦¬ê°€ ë¹„ì–´ìˆì„ì‹œ NULLë°˜í™˜
 			return;
 		}
 
-		//°æ¿ì1 : ¸®ÇÁ³ëµå Á¦°Å
+		//ê²½ìš°1 : ë¦¬í”„ë…¸ë“œ ì œê±°
 		if (node->left == NULL && node->right == NULL) {
-			if (node->parent == NULL) {	//ÀÌ ³ëµå°¡ À¯ÀÏÇÑ ³ëµåÀÏ °æ¿ì
+			if (node->parent == NULL) {	//ì´ ë…¸ë“œê°€ ìœ ì¼í•œ ë…¸ë“œì¼ ê²½ìš°
 				this->root = NULL;
-			} else if (node->parent->left == node) {	//ÀÚ½ÅÀÌ ¿ŞÂÊÀÚ½ÄÀÌ¶ó¸é ºÎ¸ğÀÇ ¿ŞÂÊ ³ëµå »èÁ¦
+			} else if (node->parent->left == node) {	//ìì‹ ì´ ì™¼ìª½ìì‹ì´ë¼ë©´ ë¶€ëª¨ì˜ ì™¼ìª½ ë…¸ë“œ ì‚­ì œ
 				node->parent->left = NULL;
 			} else {
-				node->parent->right = NULL;				//¿À¸¥ÂÊ ÀÚ½ÄÀÌ¶ó¸é ºÎ¸ğÀÇ ¿À¸¥ÂÊ ³ëµå »èÁ¦
+				node->parent->right = NULL;				//ì˜¤ë¥¸ìª½ ìì‹ì´ë¼ë©´ ë¶€ëª¨ì˜ ì˜¤ë¥¸ìª½ ë…¸ë“œ ì‚­ì œ
 			}
 
 			node->parent = NULL;
@@ -120,20 +112,20 @@ public:
 			return;
 		}
 
-		//°æ¿ì2 : ÀÚ½ÄÀÌ ÇÏ³ªÀÎ ³ëµå Á¦°Å
+		//ê²½ìš°2 : ìì‹ì´ í•˜ë‚˜ì¸ ë…¸ë“œ ì œê±°
 		if (node->left == NULL || node->right == NULL) {
 			TreeNode* child = node->left;
-			if (node->left == NULL) {	//ÀÚ½ÄÀÌ ¾î´ÀÂÊ¿¡ ÀÖ´ÂÁö È®ÀÎ
+			if (node->left == NULL) {	//ìì‹ì´ ì–´ëŠìª½ì— ìˆëŠ”ì§€ í™•ì¸
 				child = node->right;
 			}
 
-			child->parent = node->parent;	//»èÁ¦³ëµåÀÇ ÀÚ½ÄÀ» ½Â°İ½ÃÅ´
-			if (node->parent == NULL) {		//ÀÌ ³ëµå°¡ root¿´´Ù¸é ÀÚ½ÄÀ» root·Î °»½Å
+			child->parent = node->parent;	//ì‚­ì œë…¸ë“œì˜ ìì‹ì„ ìŠ¹ê²©ì‹œí‚´
+			if (node->parent == NULL) {		//ì´ ë…¸ë“œê°€ rootì˜€ë‹¤ë©´ ìì‹ì„ rootë¡œ ê°±ì‹ 
 				this->root = child;
 			} else if (node->parent->left == node) {
 				node->parent->left = child;
 			} else {
-				node->parent->right = child;	//±âÁ¸ÀÌ ¿ŞÂÊ ÀÚ½ÄÀÌ¾ú´ÂÁö ¿À¸¥ÂÊ ÀÚ½ÄÀÌ¾ú´ÂÁö¿¡ µû¶ó ¾Ë¸Â°Ô ½Â°İ
+				node->parent->right = child;	//ê¸°ì¡´ì´ ì™¼ìª½ ìì‹ì´ì—ˆëŠ”ì§€ ì˜¤ë¥¸ìª½ ìì‹ì´ì—ˆëŠ”ì§€ì— ë”°ë¼ ì•Œë§ê²Œ ìŠ¹ê²©
 			}
 
 			node->parent = NULL;
@@ -143,16 +135,16 @@ public:
 			return;
 		}
 
-		//°æ¿ì3 : ÀÚ½ÄÀÌ µÑÀÎ ³ëµå Á¦°Å
+		//ê²½ìš°3 : ìì‹ì´ ë‘˜ì¸ ë…¸ë“œ ì œê±°
 		TreeNode* successor = node->right;
 
-		while (successor->left != NULL) {	//ÈÄ¼ÓÀÚ Å½»ö
+		while (successor->left != NULL) {	//í›„ì†ì íƒìƒ‰
 			successor = successor->left;
 		}
 
-		RemoveTreeNode(successor);		//ÈÄ¼ÓÀÚ ¿¬°áÇØÁ¦
+		RemoveTreeNode(successor);		//í›„ì†ì ì—°ê²°í•´ì œ
 
-		if (node->parent == NULL) {		//³ëµåÀÇ À§Ä¡¿¡ ÈÄ¼ÓÀÚ »ğÀÔ
+		if (node->parent == NULL) {		//ë…¸ë“œì˜ ìœ„ì¹˜ì— í›„ì†ì ì‚½ì…
 			root = successor;
 		} else if (node->parent->left == node) {
 			node->parent->left = successor;
@@ -181,16 +173,16 @@ public:
 
 		space += level_space;
 
-		// ¿À¸¥ÂÊ ÀÚ½Ä Ãâ·Â (¿À¸¥ÂÊÀ¸·Î ´õ ¸¹Àº ¿©¹éÀ» ÁØ ÈÄ)
+		// ì˜¤ë¥¸ìª½ ìì‹ ì¶œë ¥ (ì˜¤ë¥¸ìª½ìœ¼ë¡œ ë” ë§ì€ ì—¬ë°±ì„ ì¤€ í›„)
 		PrintTree(node->right, space);
 
-		// ÇöÀç ³ëµå Ãâ·Â
+		// í˜„ì¬ ë…¸ë“œ ì¶œë ¥
 		cout << endl;
 		for (int i = level_space; i < space; i++)
-			cout << " ";  // ¿©¹éÀ» Ãâ·Â
-		cout << node->value << "\n";  // ³ëµåÀÇ °ªÀ» Ãâ·Â
+			cout << " ";  // ì—¬ë°±ì„ ì¶œë ¥
+		cout << node->value << "\n";  // ë…¸ë“œì˜ ê°’ì„ ì¶œë ¥
 
-		// ¿ŞÂÊ ÀÚ½Ä Ãâ·Â (¿ŞÂÊÀ¸·Î ¿©¹éÀ» ÁØ ÈÄ)
+		// ì™¼ìª½ ìì‹ ì¶œë ¥ (ì™¼ìª½ìœ¼ë¡œ ì—¬ë°±ì„ ì¤€ í›„)
 		PrintTree(node->left, space);
 	}
 
@@ -215,7 +207,7 @@ int main() {
 	tree.InsertTreeNode(7);
 	tree.InsertTreeNode(13);
 
-	tree.Display();  // Æ®¸® Ãâ·Â
+	tree.Display();  // íŠ¸ë¦¬ ì¶œë ¥
 
 	return 0;
 
