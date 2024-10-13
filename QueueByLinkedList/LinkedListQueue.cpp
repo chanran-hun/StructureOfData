@@ -1,57 +1,73 @@
-#include <iostream>
+ï»¿#include <iostream>
 using namespace std;
 
 class LinkedListNode {
 public:
-	int data;				//³ëµå¿¡ µé¾î°£ °ª
-	LinkedListNode* next;	//´ÙÀ½ ³ëµå¸¦ °¡¸®Å´
-	LinkedListNode(int value) {	//³ëµåÀÇ »ı¼ºÀÚ, ³ÖÀº Á¤¼ö·Î data¸¦ ÃÊ±âÈ­ ÇÏ°í next´Â NULL·Î ÃÊ±âÈ­
+	int data;					//ë…¸ë“œì— ë“¤ì–´ê°„ ê°’
+	LinkedListNode* next;		//ë‹¤ìŒ ë…¸ë“œë¥¼ ê°€ë¦¬í‚´
+
+	LinkedListNode(int value) {	//ë…¸ë“œì˜ ìƒì„±ì, ë„£ì€ ì •ìˆ˜ë¡œ dataë¥¼ ì´ˆê¸°í™” í•˜ê³  nextëŠ” NULLë¡œ ì´ˆê¸°í™”
 		data = value;
 		next = nullptr;
 	}
 };
 
 class Queue {
-	LinkedListNode* front;	//ÃÖÀü¹æ ³ëµå
-	LinkedListNode* back;	//ÃÖÈÄ¹æ ³ëµå
+	LinkedListNode* front;	//ìµœì „ë°© ë…¸ë“œ
+	LinkedListNode* back;	//ìµœí›„ë°© ë…¸ë“œ
+
 public:
 	Queue() {
 		front = nullptr;
-		back = nullptr;	//QueueÀÇ »ı¼ºÀÚ, front¿Í backÀÌ ¸ğµÎ NULL·Î ÃÊ±âÈ­ µÊ
+		back = nullptr;	//Queueì˜ ìƒì„±ì, frontì™€ backì´ ëª¨ë‘ NULLë¡œ ì´ˆê¸°í™” ë¨
 	}
 
-	void enQueue(int value) {	//»õ·Î¿î °ª »ğÀÔ
-		LinkedListNode* node = new LinkedListNode(value);	//³ëµå »ı¼º
-		if (this->back == nullptr) {	//¸¸¾à ³ëµå°¡ ÇÏ³ª¶ó¸é ±× ³ëµå´Â frontÀÌÀÚ backÀÌ µÈ´Ù
+	~Queue() {			//Queueì˜ ì†Œë©¸ì, Queueêµ¬ì¡° ë‚´ë¶€ì˜ ë…¸ë“œë“¤ì˜ ë©”ëª¨ë¦¬ë¥¼ ë°˜ë‚©
+		while (front != nullptr) {
+			LinkedListNode* temp = front;
+			front = front->next;
+			delete temp;
+		}
+	}
+
+	void enQueue(int value) {	//ìƒˆë¡œìš´ ê°’ ì‚½ì…
+		LinkedListNode* node = new LinkedListNode(value);	//ë…¸ë“œ ìƒì„±
+
+		if (this->back == nullptr) {	//ë§Œì•½ ë…¸ë“œê°€ í•˜ë‚˜ë¼ë©´ ê·¸ ë…¸ë“œëŠ” frontì´ì backì´ ëœë‹¤
 			this->front = node;
 			this->back = node;
-		}	
-		else {
-			this->back->next = node;	//µÚ¿¡ ÇÏ³ª¸¦ Ãß°¡Çß´Ù¸é ±× Ãß°¡µÈ ³ëµå°¡ backÀÌ µÇ¾î¾ß ÇÑ´Ù.
+		} else {
+			this->back->next = node;	//ë’¤ì— í•˜ë‚˜ë¥¼ ì¶”ê°€í–ˆë‹¤ë©´ ê·¸ ì¶”ê°€ëœ ë…¸ë“œê°€ backì´ ë˜ì–´ì•¼ í•œë‹¤.
 			this->back = node;
 		}
 
-		cout << value << "»ğÀÔ ¼º°ø!" << endl;
+		cout << value << "ì‚½ì… ì„±ê³µ!" << endl;
 	}
 
 	int deQueue() {
 		if (this->front == nullptr) {
-			cout << "ºñ¾îÀÖ½À´Ï´Ù deQueue ½ÇÆĞ!" << endl;		//queue°¡ ºñ¾îÀÖ´Ù¸é dequeue´Â ºÒ°¡´ÉÇÏ´Ù
+			cout << "ë¹„ì–´ìˆìŠµë‹ˆë‹¤ deQueue ì‹¤íŒ¨!" << endl;		//queueê°€ ë¹„ì–´ìˆë‹¤ë©´ dequeueëŠ” ë¶ˆê°€ëŠ¥í•˜ë‹¤
 			return -1;
 		}
-		int value = this->front->data;		//front ³ëµåÀÇ µ¥ÀÌÅÍ°ªÀ» ÀúÀåÇØµĞ´Ù.
-		LinkedListNode* temp = this->front;	//ÇöÀçÀÇ front¸¦ ÀúÀåÇØµĞ´Ù
-		this->front = this->front->next;	//front ´ÙÀ½ ³ëµå°¡ front°¡ µÇ°Ô ÇÑ´Ù.
-		delete temp;	//±âÁ¸ÀÇ front°¡ Â÷ÁöÇÏ´Â ¸Ş¸ğ¸® ¹İ³³
+
+		int value = this->front->data;		//front ë…¸ë“œì˜ ë°ì´í„°ê°’ì„ ì €ì¥í•´ë‘”ë‹¤.
+		LinkedListNode* temp = this->front;	//í˜„ì¬ì˜ frontë¥¼ ì €ì¥í•´ë‘”ë‹¤
+		this->front = this->front->next;	//front ë‹¤ìŒ ë…¸ë“œê°€ frontê°€ ë˜ê²Œ í•œë‹¤.
+		delete temp;	//ê¸°ì¡´ì˜ frontê°€ ì°¨ì§€í•˜ëŠ” ë©”ëª¨ë¦¬ ë°˜ë‚©
 		if (this->front == nullptr) {
-			cout << "³²Àº µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù" << endl;		//¸¸¾à dequeueÇÑ °ªÀÌ queueÀÇ À¯ÀÏÇÑ °ªÀÌ¾ú´Ù¸é 
-			this->back = nullptr;						//backµµ NULLÀÌ µÇ¾î¾ßÇÑ´Ù.
+			cout << "ë‚¨ì€ ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤" << endl;		//ë§Œì•½ dequeueí•œ ê°’ì´ queueì˜ ìœ ì¼í•œ ê°’ì´ì—ˆë‹¤ë©´ 
+			this->back = nullptr;						//backë„ NULLì´ ë˜ì–´ì•¼í•œë‹¤.
 		}
 		return value;
 	}
 
-	void show() {	//ÇöÀç queueÀÇ »óÅÂ¸¦ °¡½ÃÈ­ ÇÑ´Ù.
-		cout << "QueueÀÇ ÇöÀç »óÅÂ °¡½ÃÈ­ :";
+	void show() {	//í˜„ì¬ queueì˜ ìƒíƒœë¥¼ ê°€ì‹œí™” í•œë‹¤.
+		if (this->front == NULL) {
+			cout << "Queueê°€ ë¹„ì—ˆìŠµë‹ˆë‹¤!" << endl;
+			return;
+		}
+
+		cout << "Queueì˜ í˜„ì¬ ìƒíƒœ ê°€ì‹œí™” :";
 		LinkedListNode* node = this->front;
 		while (node != nullptr) {
 			cout << node->data << "->";
@@ -64,18 +80,22 @@ public:
 int main() {
 	Queue myQueue;
 
-	myQueue.enQueue(1);	//Queue¿¡ 1ºÎÅÍ 3±îÁö »ğÀÔÇÑ´Ù
+	myQueue.show();		//ë¹„ì—ˆì„ë•Œì˜ ì¶œë ¥
+
+	myQueue.deQueue();	//ë¹„ì—ˆì„ë•Œì˜ deQueue -> ë‚˜ì¤‘ì— ê°œì„ í•´ì•¼í•¨
+
+	myQueue.enQueue(1);	//Queueì— 1ë¶€í„° 3ê¹Œì§€ ì‚½ì…í•œë‹¤
 	myQueue.enQueue(2);
 	myQueue.enQueue(3);
 		
-	myQueue.show();	//Queue°¡½ÃÈ­
+	myQueue.show();	//Queueê°€ì‹œí™”
 
-	cout << myQueue.deQueue() << "»èÁ¦ ¹× ¹İÈ¯" << endl;	//ÃÖÀü¹æ °ªÀ» »èÁ¦ ¹× ¹İÈ¯ÇÑ´Ù
+	cout << myQueue.deQueue() << "ì‚­ì œ ë° ë°˜í™˜" << endl;	//ìµœì „ë°© ê°’ì„ ì‚­ì œ ë° ë°˜í™˜í•œë‹¤
 
-	myQueue.show();	//Queue°¡½ÃÈ­
+	myQueue.show();	//Queueê°€ì‹œí™”
 	
 	return 0;
 }
-//Å¥´Â ¼±ÀÔ¼±ÃâÀÌ´Ï ¸ÕÀú µé¾î¿Â ¿äÃ»À» ¸ÕÀú Ã³¸®ÇØ¾ßÇÏ´Â ±¸Á¶¿¡¼­ ±²ÀåÈ÷ À¯¿ëÇÏ´Ù. 
-//¹İ¸é¿¡ ½ºÅÃÀº ÃÖ±Ù Ç×¸ñÀ» ¸ÕÀú Ã³¸®ÇØ¾ß ÇÒ ¶§´Â ½ºÅÃÀÌ À¯¿ëÇÏ´Ù. ÃÖ±Ù Ç×¸ñÀ» Ã³¸®ÇÏ°í ±× »óÅÂ¿¡¼­ ÆËÀ» ÇÏ°Ô µÇ¸é ÀÌÀü
-//»óÅÂ·Î µ¹¾Æ¿À´Â ½ÄÀÇ ¹æ¹ıÀÌ »ç¿ëµÉ ¼ö ÀÖ´Ù.
+//íëŠ” ì„ ì…ì„ ì¶œì´ë‹ˆ ë¨¼ì € ë“¤ì–´ì˜¨ ìš”ì²­ì„ ë¨¼ì € ì²˜ë¦¬í•´ì•¼í•˜ëŠ” êµ¬ì¡°ì—ì„œ êµ‰ì¥íˆ ìœ ìš©í•˜ë‹¤. 
+//ë°˜ë©´ì— ìŠ¤íƒì€ ìµœê·¼ í•­ëª©ì„ ë¨¼ì € ì²˜ë¦¬í•´ì•¼ í•  ë•ŒëŠ” ìŠ¤íƒì´ ìœ ìš©í•˜ë‹¤. ìµœê·¼ í•­ëª©ì„ ì²˜ë¦¬í•˜ê³  ê·¸ ìƒíƒœì—ì„œ íŒì„ í•˜ê²Œ ë˜ë©´ ì´ì „
+//ìƒíƒœë¡œ ëŒì•„ì˜¤ëŠ” ì‹ì˜ ë°©ë²•ì´ ì‚¬ìš©ë  ìˆ˜ ìˆë‹¤.
