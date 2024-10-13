@@ -1,23 +1,24 @@
-#include <iostream>
+ï»¿#include <iostream>
 using namespace std;
+#include <stdexcept>  // ì˜ˆì™¸ ì²˜ë¦¬ì— í•„ìš”í•œ í—¤ë”
 
-class LinkedListNode {	//³ëµå Å¬·¡½º, µ¥ÀÌÅÍ °ªÀ» °¡Áö°í ´ÙÀ½ ³ëµå¸¦ °¡¸®Å²´Ù.
+class LinkedListNode {	//ë…¸ë“œ í´ë˜ìŠ¤, ë°ì´í„° ê°’ì„ ê°€ì§€ê³  ë‹¤ìŒ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¨ë‹¤.
 public:
 	int data;
 	LinkedListNode* next;
 
-	LinkedListNode(int d) {	//µ¥ÀÌÅÍ°ªÀ» ¹Ş¾Æ¼­ ÃÊ±âÈ­ ½ÃÅ°°í Æ÷ÀÎÅÍ´Â NULLÀ» °¡¸®Å°°Ô ÃÊ±âÈ­
+	LinkedListNode(int d) {	//ë°ì´í„°ê°’ì„ ë°›ì•„ì„œ ì´ˆê¸°í™” ì‹œí‚¤ê³  í¬ì¸í„°ëŠ” NULLì„ ê°€ë¦¬í‚¤ê²Œ ì´ˆê¸°í™”
 		data = d;
 		next = nullptr;
 	}
 };
 
-class Stack {	//½ºÅÃ Å¬·¡½º
+class Stack {	//ìŠ¤íƒ í´ë˜ìŠ¤
 public:
-	LinkedListNode* head;	//Linked ListÀÇ head
+	LinkedListNode* head;	//Linked Listì˜ head
 
 	Stack() {
-		head = nullptr;		//head¸¦ NULL·Î ÃÊ±âÈ­
+		head = nullptr;		//headë¥¼ NULLë¡œ ì´ˆê¸°í™”
 	}
 
 	~Stack() {
@@ -28,35 +29,30 @@ public:
 		}
 	}
 
-	void push(int value) {	//»õ·Î¿î °³Ã¼ Ãß°¡
+	void push(int value) {	//ìƒˆë¡œìš´ ê°œì²´ ì¶”ê°€
 		LinkedListNode* node = new LinkedListNode(value);
 
-		node->next = head;	//head ¾Õ¿¡ »õ·Î¿î °³Ã¼ »ğÀÔ
-		head = node;	//head °»½Å
+		node->next = head;	//head ì•ì— ìƒˆë¡œìš´ ê°œì²´ ì‚½ì…
+		head = node;	//head ê°±ì‹ 
 
-		cout << value << "À»/¸¦ »õ·Î Ãß°¡ÇÕ´Ï´Ù" << endl;
+		cout << value << "ì„/ë¥¼ ìƒˆë¡œ ì¶”ê°€í•©ë‹ˆë‹¤" << endl;
 	}
 
-	int pop() {		//ÃÖ»ó´Ü ³ëµå ¿¬°áÇØÁ¦, °ª ¹İÈ¯
+	int pop() {		//ìµœìƒë‹¨ ë…¸ë“œ ì—°ê²°í•´ì œ, ê°’ ë°˜í™˜
 		if (this->head == nullptr) {
-			cout << "½ºÅÃÀÌ ºñ¾î ÀÖ½À´Ï´Ù." << endl;
-			return -1; // ¿¡·¯ ÄÚµå ¹İÈ¯
+			throw underflow_error("ìŠ¤íƒì´ ë¹„ì–´ìˆìŠµë‹ˆë‹¤.");	//ì˜ˆì™¸ì²˜ë¦¬
 		}
 
-		int value = 0;
+		int value = head->data;			//headê°’ ì €ì¥
+		LinkedListNode* temp = head;	//ì„ì‹œ ë…¸ë“œ í¬ì¸í„° ìƒì„±(ë©”ëª¨ë¦¬ ë°˜í™˜ì„ ìœ„í•œê²ƒì„)
+		head = head->next;	//head ê°±ì‹ 
+		delete temp;		//ì „ head ë©”ëª¨ë¦¬ ë°˜ë‚©
 
-		if (this->head != nullptr) {
-			LinkedListNode* temp = head;
-			value = temp->data;		//ÃÖ»ó´Ü °ª ´Ù¸¥°÷¿¡ ¿Å°Ü´ã±â
-			head = head->next;	//head °»½Å
-			delete temp;
-		}
-
-		return value;	//±âÁ¸ÀÇ ÃÖ»ó´Ü °ª ¹İÈ¯
+		return value;
 	}
 
-	void show() {	//StackÀÇ Çö »óÅÂ °¡½ÃÈ­
-		cout << "ÇöÀç Stack »óÅÂ °¡½ÃÈ­: ";
+	void show() {	//Stackì˜ í˜„ ìƒíƒœ ê°€ì‹œí™”
+		cout << "í˜„ì¬ Stack ìƒíƒœ ê°€ì‹œí™”: ";
 
 		LinkedListNode* temp = head;
 
@@ -72,15 +68,27 @@ public:
 int main() {
 	Stack myStack;
 
+	try {
+		cout << myStack.pop() << " ì‚­ì œ ë° ë°˜í™˜" << endl;
+	}
+	catch (const underflow_error& e) {
+		cerr << e.what() << endl; 
+	}
+
 	myStack.push(1);
-	myStack.push(2);	//1ºÎÅÍ 3 Ãß°¡
+	myStack.push(2);	//1ë¶€í„° 3 ì¶”ê°€
 	myStack.push(3);
 
-	myStack.show();		//ÇöÀç Stack»óÅÂ °¡½ÃÈ­
+	myStack.show();		//í˜„ì¬ Stackìƒíƒœ ê°€ì‹œí™”
 
-	cout << myStack.pop() << "»èÁ¦ ¹× ¹İÈ¯" << endl;		//°¡Àå ÃÖ±Ù¿¡ Ãß°¡µÈ °ª »èÁ¦ ¹× ¹İÈ¯
+	try {
+		cout << myStack.pop() << " ì‚­ì œ ë° ë°˜í™˜" << endl;
+	}
+	catch (const underflow_error& e) {
+		cerr << e.what() << endl;
+	}
 
-	myStack.show();		//ÇöÀç Stack»óÅÂ °¡½ÃÈ­
+	myStack.show();		//í˜„ì¬ Stackìƒíƒœ ê°€ì‹œí™”
 
 	return 0;
 }     
