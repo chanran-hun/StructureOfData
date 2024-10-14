@@ -17,24 +17,20 @@ public:
 	}
 
 	void push(int value) {	//새로운 수를 입력
-		if (this->top == this->array_size - 1) {
-			cout << "현재 배열은 공간이 부족합니다 두배로 늘립니다" << endl;	//배열의 공간이 부족할 경우 확장
-			int* tempArray = new int[this->array_size*2];	//크기를 두배로 확장
-			for (int i = 0; i < this->array_size; i++) {
-				tempArray[i] = this->array[i];
+		if (top == array_size - 1) {
+			int* tempArray = new int[array_size*2];	//크기를 두배로 확장
+
+			for (int i = 0; i < array_size; i++) {
+				tempArray[i] = array[i];
 			}
 
-			delete[] this->array;
+			delete[] array;
 
-			this->array = tempArray;
-			this->array_size *= 2;
-			
-			for (int i = 0; i < this->array_size / 2; i++) {
-				this->array[i] = tempArray[i];
-			}
+			array = tempArray;
+			array_size *= 2;
 		}
 
-		this->array[++this->top] = value;
+		array[++top] = value;
 		cout << value << "을/를 삽입했습니다" << endl;
 	}
 
