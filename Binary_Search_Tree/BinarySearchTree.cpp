@@ -108,33 +108,27 @@ public:
 	}
 
 	void RemoveTreeNode(TreeNode* node) {
-		if (this->root == nullptr || node == nullptr) {	//트리가 비어있을시 NULL반환
+		if (root == nullptr || node == nullptr) {	//트리가 비어있을시 종료
 			return;
 		}
 
 		//경우1 : 리프노드 제거
 		if (node->left == nullptr && node->right == nullptr) {
-			if (node->parent == nullptr) {	//이 노드가 유일한 노드일 경우
-				this->root = nullptr;
+			if (node->parent == nullptr) {		//이 노드가 유일한 노드일 경우
+				root = nullptr;
 			} else if (node->parent->left == node) {	//자신이 왼쪽자식이라면 부모의 왼쪽 노드 삭제
 				node->parent->left = nullptr;
 			} else {
 				node->parent->right = nullptr;				//오른쪽 자식이라면 부모의 오른쪽 노드 삭제
 			}
 
-			node->parent = nullptr;
-			node->left = nullptr;
-			node->right = nullptr;
-
+			delete node;
 			return;
 		}
 
 		//경우2 : 자식이 하나인 노드 제거
 		if (node->left == nullptr || node->right == nullptr) {
-			TreeNode* child = node->left;
-			if (node->left == nullptr) {	//자식이 어느쪽에 있는지 확인
-				child = node->right;
-			}
+			TreeNode* child = (node->left != nullptr) ? node->left : node->right;	//자식이 어느쪽인지
 
 			child->parent = node->parent;	//삭제노드의 자식을 승격시킴
 			if (node->parent == nullptr) {		//이 노드가 root였다면 자식을 root로 갱신
@@ -145,10 +139,7 @@ public:
 				node->parent->right = child;	//기존이 왼쪽 자식이었는지 오른쪽 자식이었는지에 따라 알맞게 승격
 			}
 
-			node->parent = nullptr;
-			node->left = nullptr;
-			node->right = nullptr;
-		
+			delete node;
 			return;
 		}
 
@@ -159,7 +150,18 @@ public:
 			successor = successor->left;
 		}
 
-		RemoveTreeNode(successor);		//후속자 연결해제
+		// 후속자를 삭제합니다.
+		if (successor->parent != node) { // successor가 node의 자식이 아닌 경우
+			// successor의 오른쪽 자식을 successor의 부모와 연결
+			successor->parent->left = successor->right;
+			if (successor->right != nullptr) {
+				successor->right->parent = successor->parent;
+			}
+			successor->right = node->right; // successor의 오른쪽을 node의 오른쪽으로
+			if (successor->right != nullptr) {
+				successor->right->parent = successor; // 부모 연결
+			}
+		}
 
 		if (node->parent == nullptr) {		//노드의 위치에 후속자 삽입
 			root = successor;
@@ -170,18 +172,17 @@ public:
 		}
 
 		successor->parent = node->parent;
-
 		successor->left = node->left;
 		node->left->parent = successor;
 
-		successor->right = node->right;
-		if (node->right != nullptr) {
-			node->right->parent = successor;
+		if (node->right != successor) {
+			successor->right = node->right;
+			if (node->right != nullptr) {
+				node->right->parent = successor;
+			}
 		}
 
-		node->parent = nullptr;
-		node->left = nullptr;
-		node->right = nullptr;
+		delete node;
 	}
 
 	void PrintTree(TreeNode* node, int space = 0, int level_space = 6) {
@@ -225,8 +226,8 @@ int main() {
 	tree.InsertTreeNode(13);
 
 	tree.RemoveTreeNode(tree.FindTreeNode(13));	//리프노드 제거
-	tree.RemoveTreeNode(tree.FindTreeNode(3));	//자식이 두개인 노드 제거
 	tree.RemoveTreeNode(tree.FindTreeNode(10));	//자식이 하나인 노드 제거
+	tree.RemoveTreeNode(tree.FindTreeNode(6));	//자식이 두개인 노드 제거
 
 	tree.Display();  // 트리 출력
 
