@@ -15,36 +15,6 @@ public:
 		parent = nullptr;
 	}
 };
-
-//재귀적인 방법
-TreeNode* FindValue(TreeNode* current, int target) {	//한번의 검사로 남은 공간의 절반을 날릴 수 있기 때문에 유용함
-	if (current == nullptr || current->value == target) {	//목푯값이 현재 노드의 값이라면 현재 노드를 반환
-		return current;
-	}
-
-	if (target < current->value) {	//현재 노드보다 목푯값이 작다면 
-		return FindValue(current->left, target);			//왼쪽 자식 노드로 재귀실행
-	}
-
-	return FindValue(current->right, target);
-}
-
-//반복적인 방법
-TreeNode* FindValueItr(TreeNode* root, int target) {
-	TreeNode* current = root;	//시작점
-
-	while (current != nullptr && current->value != target) {	//마지막 노드에 도달하거나 목표물을 찾으면 종료
-		if (target < current->value) {						//목표물이 작을경우 왼쪽으로
-			current = current->left;
-		}
-		else {												//목표물이 클경우 오른쪽으로
-			current = current->right;
-		}
-	}
-
-	return current;
-}
-
 class BinarySearchTree {
 	TreeNode* root;
 public:
@@ -63,13 +33,40 @@ public:
 			delete node;
 		}
 	}
-
+	//재귀적인 탐색
+	TreeNode* FindValue(TreeNode* current, int target) {
+		//경우 1 : 찾는 노드가 현재 노드와 같을경우 : 현재 노드 반환
+		if (current == nullptr || current->value == target) {
+			return current;
+		}
+		//경우 2 : 찾는 노드가 현재 노드보다 작을 경우 
+		if (target < current->value) {
+			return FindValue(current->left, target);	//왼쪽 노드를 대상으로 재귀실행
+		}
+		//경우 3 : 찾는 노드가 현재 노드보다 클 경우
+		return FindValue(current->right, target);		//오른쪽 노드를 대상으로 재귀실행	
+	}
+	//재귀적인 탐색을 이용하기 위한 메서드
 	TreeNode* FindTreeNode(int target) {
 		if (this->root == nullptr) {
 			return nullptr;
 		}
 
 		return FindValue(this->root, target);
+	}
+	//반복적인 방법
+	TreeNode* FindValueItr(int target) {
+		TreeNode* current = root;	//임시 노드를 만들어내고 트리의 root를 저장한다.
+		//반복문 실행 : 노드의 끝까지 탐색했으나 값을 찾지 못하거나 값을 때 까지 반복탐색
+		while (current != nullptr && current->value != target) {
+			if (target < current->value) {
+				current = current->left;
+			} else {
+				current = current->right;
+			}
+		}
+		//끝까지 값을 찾아내지 못하거나 값을 찾아냈을 경우 그 값을 반환
+		return current;
 	}
 
 	void InsertNode(TreeNode* current, int new_value) {	//삽입 비용은 깊이에 선형적으로 비례해 증가함
@@ -225,9 +222,9 @@ int main() {
 	tree.InsertTreeNode(7);
 	tree.InsertTreeNode(13);
 
-	tree.RemoveTreeNode(tree.FindTreeNode(13));	//리프노드 제거
-	tree.RemoveTreeNode(tree.FindTreeNode(10));	//자식이 하나인 노드 제거
-	tree.RemoveTreeNode(tree.FindTreeNode(6));	//자식이 두개인 노드 제거
+	tree.RemoveTreeNode(tree.FindValueItr(13));	//리프노드 제거
+	tree.RemoveTreeNode(tree.FindValueItr(10));	//자식이 하나인 노드 제거
+	tree.RemoveTreeNode(tree.FindValueItr(6));	//자식이 두개인 노드 제거
 
 	tree.Display();  // 트리 출력
 
