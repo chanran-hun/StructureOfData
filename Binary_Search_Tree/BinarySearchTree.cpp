@@ -74,32 +74,28 @@ public:
 			//중복된 값은 추가 하지 않음
 			return;
 		}
-
+		//경우 1 : 삽입값이 현재 탐색중인 노드보다 작을경우 -> 왼쪽으로 이동
 		if (new_value < current->value) {
 			if (current->left == nullptr) {
 				current->left = new TreeNode(new_value);
 				current->left->parent = current;
-			}
-			else {
+			} else {
 				InsertNode(current->left, new_value);
 			}
-		}
-		else {
+		} else {//경우 2 : 삽입값이 현재 탐색중인 노드보다 클경우 -> 오른쪽으로 이동
 			if (current->right == nullptr) {
 				current->right = new TreeNode(new_value);
 				current->right->parent = current;
-			}
-			else {
+			} else {
 				InsertNode(current->right, new_value);
 			}
 		}
 	}
-
+	//사실상 한 세트 root가 비어있을 시 새로운 root를 생성하고 root가 존재한다면 새 개체를 삽입
 	void InsertTreeNode(int new_value) {
 		if (root == nullptr) {	
 			root = new TreeNode(new_value);
-		}
-		else {
+		} else {
 			InsertNode(root, new_value);
 		}
 	}
