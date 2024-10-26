@@ -33,14 +33,13 @@ public:
 				return nullptr;
 			}
 		}
-
 		char next_letter = target[index];
 		int next_index = LetterToIndex(next_letter);
 		TrieNode* next_child = current->children[next_index];
 		if (next_child == nullptr) {
 			return nullptr;
 		} else {
-			TrieNodeSearch(current, target, index + 1);
+			return TrieNodeSearch(next_child, target, index + 1);
 		}
 	}
 
@@ -54,7 +53,6 @@ public:
 		} else {
 			char next_letter = new_value[index];
 			int next_index = LetterToIndex(next_letter);
-			cout << next_letter ;
 			TrieNode* next_child = current->children[next_index];
 			if (next_child == nullptr) {
 				next_child = new TrieNode();
@@ -76,9 +74,7 @@ public:
 			}
 		} else {
 			char next_letter = target[index];
-			cout << next_letter;
 			int next_index = LetterToIndex(next_letter);
-			cout << next_index;
 			TrieNode* next_child = current->children[next_index];
 			if (next_child != nullptr) {
 				if (DeleteTrieNode(next_child, target, index + 1)) {
@@ -100,6 +96,7 @@ public:
 
 		return true;
 	}
+
 };
 int main() {
 	Trie myTrie = Trie();
