@@ -97,12 +97,51 @@ public:
 		return true;
 	}
 
+	void DeleteTrie(string target) {
+		DeleteTrieNode(root, target, 0);
+	}
+
 };
 int main() {
 	Trie myTrie = Trie();
 
 	myTrie.InsertTrie("hello");
 	myTrie.InsertTrie("world");
+	myTrie.InsertTrie("hey");
+
+	TrieNode* hello = myTrie.TrieSearch("hello");
+	TrieNode* hey = myTrie.TrieSearch("hey");
+
+	if (hello->is_entry) {
+		cout << "hello is valid" << endl;
+	}
+
+	if (hey->is_entry) {
+		cout << "hey is valid" << endl;
+	}
+
+	myTrie.DeleteTrie("hey");
+
+	hey = myTrie.TrieSearch("hey");
+	
+	TrieNode* test = myTrie.root;
+	test = test->children[7];
+
+	if (test != nullptr) {
+		cout << "success" << endl;
+	}
+
+	test = test->children[4];
+
+	if (test != nullptr) {
+		cout << "success" << endl;
+	}
+
+	for (int i = 0; i < 26; i++) {
+		if (test->children[i] != nullptr) {
+			cout << i << endl;
+		}
+	}
 
 	return 0;
 }
