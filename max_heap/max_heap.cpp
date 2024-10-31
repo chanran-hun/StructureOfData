@@ -5,6 +5,12 @@ class Heap {
 	int array_size;		//배열의 크기
 	int last_index;		//마지막 인덱스
 public:
+	Heap(int size) {
+		array = new int[size];
+		array_size = size;
+		last_index = 0;
+	}
+
 	void InsertHeap(int value) {
 		if (last_index == array_size - 1) {	//크기검사
 			int* trr = array;
@@ -30,4 +36,60 @@ public:
 			parent /= 2;
 		}
 	}
+
+	int removeMaxHeap() {
+		if (last_index == 0) {
+			return -1;
+		}
+		//마지막과 루트를 교환하고 힙 크기 축소
+		int result = array[1];
+		array[1] = array[last_index];
+		array[last_index] = 0;
+		last_index--;
+		//루트를 올바른 위치로
+		int i = 1;
+		while (i <= last_index) {
+			int swap = i;
+			if (2 * i <= last_index && (array[swap] < array[2 * i])) {
+				swap = 2 * i;
+			}  
+			
+			if (2 * i + 1 <= last_index && (array[swap] < array[2 * i + 1])) {
+				swap = 2 * i + 1;
+			}
+
+			if (i != swap) {
+				int temp = array[i];
+				array[i] = array[swap];
+				array[swap] = temp;
+				i = swap;
+			} else {
+				break;
+			}
+
+			return result;
+		}
+	}
+
+	void show() {
+		for (int i = 1; i <= last_index; i++) {
+			cout << array[i] << endl;
+		}
+	}
 };
+
+int main() {
+	Heap myHeap = Heap(5);
+
+	myHeap.InsertHeap(90);
+	myHeap.InsertHeap(40);
+	myHeap.InsertHeap(50);
+
+	myHeap.show();
+
+	myHeap.removeMaxHeap();
+
+	myHeap.show();
+
+	return 0;
+}
