@@ -91,6 +91,53 @@ public:
 		return result;
 	}
 
+	void updateValue(int index, float value) {
+		TaskRecord old_value = array[index];
+		array[index].priority = value;
+
+		int i = index;
+		if (old_value.priority < value) {
+			while (1 < i) {
+				int swap = i;
+				if (1 <= i / 2 && isLessThan(array[i / 2], array[swap])) {
+					swap = i / 2;
+				}
+
+				if (i != swap) {
+					TaskRecord temp = array[i];
+					array[i] = array[swap];
+					array[swap] = temp;
+					i = swap;
+				} else {
+					break;
+				}
+
+			}
+			//array[index]를 힙의 위쪽으로 올려야할 것 같음
+		} else {
+			while ( i < last_index) {
+				int swap = i;
+				if (i * 2 <= last_index && isLessThan(array[swap], array[i * 2])) {
+					swap = i * 2;
+				}
+				if (i * 2 + 1 <= last_index && isLessThan(array[swap], array[i * 2 + 1])) {
+					swap = i * 2 + 1;
+				}
+
+				if (i != swap) {
+					TaskRecord temp = array[i];
+					array[i] = array[swap];
+					array[swap] = temp;
+					i = swap;
+				} else {
+					break;
+				}
+
+			}
+			//array[index]를 힙의 아래쪽으로 내려야할 것 같음
+		}
+	}
+
 	void show() {
 		for (int i = 1; i <= last_index; i++) {
 			cout << array[i].priority << endl;
