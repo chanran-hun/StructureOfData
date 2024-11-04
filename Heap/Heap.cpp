@@ -23,8 +23,8 @@ bool isLessThan(TaskRecord a, TaskRecord b) {
 class Heap {
 	TaskRecord* array;
 	int array_size;		//배열의 크기
-	int last_index;		//마지막 인덱스
 public:
+	int last_index;		//마지막 인덱스
 	Heap(int size) {
 		array = new TaskRecord[size];
 		array_size = size;
@@ -205,30 +205,44 @@ public:
 	}
 };
 
+TaskRecord* sortMaxHeap(TaskRecord* unsorted, int size) {
+	Heap* tmp_heap = new Heap(size);
+	TaskRecord* result = new TaskRecord[size];
+
+	int j = 0;
+	while (j < size) {
+		tmp_heap->InsertMaxHeap(unsorted[j].priority);
+		j++;
+	}
+
+	j = 0;
+	while (j < size) {
+		result[j] = tmp_heap->removeMaxHeap();
+		j++;
+	}
+
+	return result;
+}
+
+TaskRecord* sortMinHeap(TaskRecord* unsorted, int size) {
+	Heap* tmp_heap = new Heap(size);
+	TaskRecord* result = new TaskRecord[size];
+
+	int j = 0;
+	while (j < size) {
+		tmp_heap->InsertMinHeap(unsorted[j].priority);
+		j++;
+	}
+
+	j = 0;
+	while (j < size) {
+		result[j] = tmp_heap->removeMinHeap();
+		j++;
+	}
+
+	return result;
+}
+
 int main() {
-	Heap maxHeap = Heap(5);
-
-	maxHeap.InsertMaxHeap(90);
-	maxHeap.InsertMaxHeap(40);
-	maxHeap.InsertMaxHeap(50);
-
-	maxHeap.show();
-
-	maxHeap.removeMaxHeap();
-
-	maxHeap.show();
-
-	Heap minHeap = Heap(5);
-
-	minHeap.InsertMinHeap(90);
-	minHeap.InsertMinHeap(40);
-	minHeap.InsertMinHeap(50);
-
-	minHeap.show();
-
-	minHeap.removeMinHeap();
-	
-	minHeap.show();
-
 	return 0;
 }
