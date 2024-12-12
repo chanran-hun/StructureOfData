@@ -2,10 +2,9 @@
 #include <cmath>
 using namespace std;
 class GridPoint {
+public:
 	float x;	//x좌표
 	float y;	//y좌표
-
-public:
 	GridPoint* next;	//다음 점
 
 	GridPoint() {
@@ -39,7 +38,17 @@ public:
 		}
 	}
 	~Grid() {
-		// 메모리 해제
+		for (int i = 0; i < num_x_bins; ++i) {
+			for (int j = 0; j < num_y_bins; ++j) {
+				GridPoint* current = &bins[i][j];
+				while (current != nullptr) {
+					GridPoint* temp = current;
+					current = current->next;
+					delete temp;
+				}
+			}
+		}
+
 		for (int i = 0; i < num_x_bins; ++i) {
 			delete[] bins[i];
 		}
@@ -54,9 +63,18 @@ public:
 			return false;
 		}
 
-		GridPoint* next_point = bins[xbin][ybin];
-		bins[xbin][ybin] = GridPoint(x, y);
-		bins[xbin][ybin].next = next_point;
+		GridPoint* newPoint = new GridPoint(x,y);
+		newPoint->next = nullptr;
+
+		if (bins[xbin][ybin].x == 0.0f && bins[xbin][ybin].y == 0.0f) {
+			bins[xbin][ybin] = *newPoint;
+		} else {
+			GridPoint* current = &bins[xbin][ybin];
+			while (current->next != nullptr) {
+				current = current->next;
+			}
+			current->next = newPoint;  // 마지막 점에 연결
+		}
 
 		return true;
 	}
