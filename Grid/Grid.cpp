@@ -31,7 +31,7 @@ public:
 
 		GridPoint next_point = bins[xbin][ybin];
 		bins[xbin][ybin] = GridPoint(x, y);
-		bins[xbin][ybin].next = &next_point;	
+		bins[xbin][ybin].next = &next_point;
 
 		return true;
 	}
@@ -40,7 +40,7 @@ public:
 class GridPoint {
 	float x;	//xÁÂÇ¥
 	float y;	//yÁÂÇ¥
-	
+
 public:
 	GridPoint* next;	//´ÙÀ½ Á¡
 	GridPoint(float setX, float setY) {
